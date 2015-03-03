@@ -12,9 +12,14 @@ namespace Games
 {
     public partial class TicTacToe : Form
     {
+        //public string player { get; set; }
+
         public TicTacToe()
         {
             InitializeComponent();
+            //Random random = new Random();
+            //int playerPiece = random.Next(1, 3);
+            //TicTacToe.player = "X";
 
             //Game field buttons
             button1.Click += new EventHandler(gameButton_Click);
@@ -43,13 +48,32 @@ namespace Games
         private void gameButton_Click(object sender, EventArgs e)
         {
             Button triggeredButton = (Button)sender;
+            Button[] gameArray = GetGameButtons();
+            bool gameEnd;
+
             triggeredButton.Text = "X";
+            triggeredButton.Enabled = false;
+            listBox1.Items.Add(string.Format("Placed at {0}", triggeredButton.Name[triggeredButton.Name.Length - 1]));
+
+            gameEnd = CheckForGameEnd();
+
+            int compMove = GetNoobCompMove();
+            if ((compMove != -1) && (gameEnd != true))
+            {
+                gameArray[compMove].Text = "O";
+                gameArray[compMove].Enabled = false;
+                listBox2.Items.Add(string.Format("Placed at {0}", gameArray[compMove].Name[gameArray[compMove].Name.Length - 1]));
+            }
+
         }
 
         //Play button
         private void button10_Click(object sender, EventArgs e)
         {
-            MainMenu.NYI();
+            Button[] gameArray = GetGameButtons();
+
+            ClearGame();
+            EnableGameButtons();
         }
 
         //Menu strip
@@ -79,6 +103,113 @@ namespace Games
         }
 
         //methods
+        public bool CheckForGameEnd()
+        {
+            Button[] gameArray = GetGameButtons();
+            bool gameOver = false;
+
+            string Winner = TicTacToeGame.CheckForWinner(gameArray);
+            if (Winner != "")
+            {
+                DisableGameButtons();
+                if (Winner == "X")
+                {
+                    listBox1.Items.Add("You Win!");
+                }
+                else
+                {
+                    listBox2.Items.Add("You Win!");
+                }
+                MessageBox.Show(string.Format("WINNER IS: {0}", Winner));
+                gameOver = true;
+            }
+            else if (NoRemainingMoves())
+            {
+                MessageBox.Show(string.Format("GAME IS A TIE"));
+                DisableGameButtons();
+                gameOver = true;
+            }
+
+            return gameOver;
+        }
+
+        public bool NoRemainingMoves()
+        {
+            Button[] gameArray = GetGameButtons();
+            bool noneRemaining = true;
+
+            foreach (Button button in gameArray)
+            {
+                if (button.Text == "")
+                {
+                    noneRemaining = false;
+                }
+            }
+            return noneRemaining;
+        }
+
+        public int GetNoobCompMove()
+        {
+            Button[] gameArray = GetGameButtons();
+            int compMove = -1;
+            int listLocation = -1;
+            int i = 0;
+
+            List<int> compChoiceList = new List<int>();
+            foreach (Button button in gameArray)
+            {
+                if (button.Text == "")
+                {
+                    compChoiceList.Add(i);
+                }
+                i++;
+            }
+            if (compChoiceList.Count() != 0)
+            {
+                Random random = new Random();
+                listLocation = random.Next(0, compChoiceList.Count());
+                compMove = compChoiceList[listLocation];
+            }
+
+            return compMove;
+        }
+
+        public void ClearGame()
+        {
+            Button[] gameArray = { button1, button2, button3, button4, button5, button6, button7, button8, button9 };
+            foreach (Button button in gameArray)
+            {
+                button.Text = "";
+                button.BackColor = default(Color);
+            }
+            listBox1.Items.Clear();
+            listBox2.Items.Clear();
+        }
+
+        public void EnableGameButtons()
+        {
+            Button[] gameArray = { button1, button2, button3, button4, button5, button6, button7, button8, button9 };
+            foreach (Button button in gameArray)
+            {
+                button.Enabled = true;
+            }
+        }
+
+        public void DisableGameButtons()
+        {
+            Button[] gameArray = { button1, button2, button3, button4, button5, button6, button7, button8, button9 };
+            foreach (Button button in gameArray)
+            {
+                button.Enabled = false;
+            }
+        }
+
+        public Button[] GetGameButtons()
+        {
+            Button[] gameArray = { button1, button2, button3, button4, button5, button6, button7, button8, button9 };
+            return gameArray;
+        }
+
         public void GoToMainMenu()
         {
             this.Hide();
