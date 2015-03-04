@@ -25,7 +25,6 @@ namespace Games
 
         public static string CheckForWinner(Button[] gameArray)
         {
-            //bool gameOver = false;
             string winner = "";
             for (int i = 0; i < 8; i++)
             {

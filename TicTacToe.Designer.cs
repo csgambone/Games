@@ -51,6 +51,7 @@
             this.flippyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.logixToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.button11 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -137,11 +138,11 @@
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(456, 48);
+            this.button10.Location = new System.Drawing.Point(404, 48);
             this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(140, 42);
+            this.button10.Size = new System.Drawing.Size(120, 42);
             this.button10.TabIndex = 11;
-            this.button10.Text = "New Game";
+            this.button10.Text = "New Game [Noob]";
             this.button10.UseVisualStyleBackColor = true;
             // 
             // listBox1
@@ -165,18 +166,18 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(401, 109);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(45, 13);
+            this.label1.Size = new System.Drawing.Size(36, 13);
             this.label1.TabIndex = 14;
-            this.label1.Text = "Player 1";
+            this.label1.Text = "Player";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(527, 109);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(45, 13);
+            this.label2.Size = new System.Drawing.Size(52, 13);
             this.label2.TabIndex = 15;
-            this.label2.Text = "Player 2";
+            this.label2.Text = "Computer";
             // 
             // menuStrip1
             // 
@@ -245,11 +246,21 @@
             this.logixToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.logixToolStripMenuItem.Text = "LogiX";
             // 
+            // button11
+            // 
+            this.button11.Location = new System.Drawing.Point(530, 48);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(120, 42);
+            this.button11.TabIndex = 17;
+            this.button11.Text = "New Game [Pro]";
+            this.button11.UseVisualStyleBackColor = true;
+            // 
             // TicTacToe
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(684, 408);
+            this.Controls.Add(this.button11);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -299,5 +310,6 @@
         private System.Windows.Forms.ToolStripMenuItem flippyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem logixToolStripMenuItem;
+        private System.Windows.Forms.Button button11;
     }
 }
