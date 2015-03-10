@@ -277,6 +277,7 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Name = "TicTacToe";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "TicTacToe";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

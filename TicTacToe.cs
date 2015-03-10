@@ -390,7 +390,7 @@ namespace Games
 
         public void ClearGame()
         {
-            Button[] gameArray = { button1, button2, button3, button4, button5, button6, button7, button8, button9 };
+            Button[] gameArray = GetGameButtons();
             foreach (Button button in gameArray)
             {
                 button.Text = "";
@@ -402,7 +402,7 @@ namespace Games
 
         public void EnableGameButtons()
         {
-            Button[] gameArray = { button1, button2, button3, button4, button5, button6, button7, button8, button9 };
+            Button[] gameArray = GetGameButtons();
             foreach (Button button in gameArray)
             {
                 button.Enabled = true;
@@ -411,7 +411,7 @@ namespace Games
 
         public void DisableGameButtons()
         {
-            Button[] gameArray = { button1, button2, button3, button4, button5, button6, button7, button8, button9 };
+            Button[] gameArray = GetGameButtons();
             foreach (Button button in gameArray)
             {
                 button.Enabled = false;
@@ -424,19 +424,10 @@ namespace Games
             return gameArray;
         }
 
-        //Navigation
-        public void GoToMainMenu()
-        {
-            this.Hide();
-            var MainMenu = new MainMenu();
-            MainMenu.Closed += (s, args) => this.Close();
-            MainMenu.Show();
-        }
-
         //Menu strip
         private void mainMenuToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            GoToMainMenu();
+            MainMenu.GoToMainMenu(this);
         }
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -448,7 +439,7 @@ namespace Games
         }
         private void flippyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MainMenu.NYI();
+            MainMenu.GoToFlippy(this);
         }
         private void ToolStripMenuItem1_Click(object sender, EventArgs e)
         {

@@ -37,12 +37,12 @@ namespace Games
         //Game selection buttons
         private void button1_Click(object sender, EventArgs e)
         {
-            GoToTicTacToe();
+            GoToTicTacToe(this);
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            NYI();
+            GoToFlippy(this);
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -72,11 +72,11 @@ namespace Games
         }
         private void ticTacToeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            GoToTicTacToe();
+            GoToTicTacToe(this);
         }
         private void flippyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NYI();
+            GoToFlippy(this);
         }
         private void ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
@@ -89,12 +89,28 @@ namespace Games
 
 
         //methods
-        public void GoToTicTacToe()
+        public static void GoToMainMenu(Form currentForm)
         {
-            this.Hide();
+            currentForm.Hide();
+            var MainMenu = new MainMenu();
+            MainMenu.Closed += (s, args) => currentForm.Close();
+            MainMenu.Show();
+        }
+
+        public static void GoToTicTacToe(Form currentForm)
+        {
+            currentForm.Hide();
             var TicTacToe = new TicTacToe();
-            TicTacToe.Closed += (s, args) => this.Close();
+            TicTacToe.Closed += (s, args) => currentForm.Close();
             TicTacToe.Show();
+        }
+
+        public static void GoToFlippy(Form currentForm)
+        {
+            currentForm.Hide();
+            var Flippy = new Flippy();
+            Flippy.Closed += (s, args) => currentForm.Close();
+            Flippy.Show();
         }
 
         public static void NYI()

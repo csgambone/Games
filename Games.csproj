@@ -44,6 +44,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Flippy.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Flippy.Designer.cs">
+      <DependentUpon>Flippy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FlippyGame.cs" />
     <Compile Include="TicTacToeGame.cs" />
     <Compile Include="MainMenu.cs">
       <SubType>Form</SubType>
@@ -59,6 +66,9 @@
     <Compile Include="TicTacToe.Designer.cs">
       <DependentUpon>TicTacToe.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Flippy.resx">
+      <DependentUpon>Flippy.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainMenu.resx">
       <DependentUpon>MainMenu.cs</DependentUpon>
     </EmbeddedResource>
