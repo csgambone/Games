@@ -9,8 +9,10 @@ namespace Games
     class FlippyGame
     {
         public int[,] GameBoard = new int[13, 15];
+        public bool centers;
+        public int moves = 0;
 
-        public void NewGame()
+        public void NewGame(bool centersSelect)
         {
             Random random = new Random();
             for (int i = 0; i < 13; i++)
@@ -19,18 +21,24 @@ namespace Games
                 {
                     GameBoard[i,j] = random.Next(0, 2);
 
-                    //unflippable space, 2% chance
-                    if (random.Next(0, 51) == 50)
+                    //unflippable space, 4% chance
+                    if (random.Next(0, 21) == 20)
                     {
                         GameBoard[i, j] = 2;
                     }
                 }
             }
+
+            centers = centersSelect;
+            moves = 0;
         }
 
         public void SwapColor(int row, int column)
         {
-            SwapButton(row, column);
+            if (centers)
+            {
+                SwapButton(row, column);
+            }
             if (row < 12)
             {
                 SwapButton(row + 1, column);

@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -13,6 +14,8 @@ namespace Games
     public partial class Flippy : Form
     {
         FlippyGame Game = new FlippyGame();
+        //public Stopwatch gameTime;
+        Stopwatch gameTime = new Stopwatch();
 
         public Flippy()
         {
@@ -25,8 +28,11 @@ namespace Games
                 gameButton.Click += new EventHandler(gameButton_Click);
             }
 
-            //Play button
-            button1.Click += new EventHandler(play_Click);
+            //Play button [Centers]
+            button1.Click += new EventHandler(playCenters_Click);
+
+            //Play button [No Centers]
+            button197.Click += new EventHandler(playNoCenters_Click);
 
             //Menu strip
             mainMenuToolStripMenuItem.Click += new EventHandler(mainMenuToolStripMenuItem_Click);
@@ -44,6 +50,8 @@ namespace Games
         private void gameButton_Click(object sender, EventArgs e)
         {
             Button triggeredButton = (Button)sender;
+
+            Game.moves++;
 
             string buttonName = triggeredButton.Name;
             string buttonNumberString = buttonName.Substring(6, buttonName.Length - 6);
@@ -66,12 +74,22 @@ namespace Games
             RenderGame();
         }
 
-        private void play_Click(object sender, EventArgs e)
+        private void playCenters_Click(object sender, EventArgs e)
         {
             ClearGame();
-            Game.NewGame();
+            Game.NewGame(true);
             RenderGame();
             EnableGameButtons();
+            gameTime.Start();
+        }
+
+        private void playNoCenters_Click(object sender, EventArgs e)
+        {
+            ClearGame();
+            Game.NewGame(false);
+            RenderGame();
+            EnableGameButtons();
+            gameTime.Start();
         }
 
         public void RenderGame() {
@@ -79,16 +97,25 @@ namespace Games
 
             int i = 0;
             int j = 0;
+            int redCount = 0;
+            int blueCount = 0;
+            int greyCount = 0;
 
             foreach (Button gameButton in gameArray)
             {
                 if (Game.GameBoard[i, j] == 0)
                 {
                     gameButton.BackColor = Color.Red;
+                    redCount++;
                 }
                 else if (Game.GameBoard[i, j] == 1)
                 {
                     gameButton.BackColor = Color.Blue;
+                    blueCount++;
+                }
+                else
+                {
+                    greyCount++;
                 }
 
                 //increment/reset counters for two dimensional gameArray
@@ -102,6 +129,33 @@ namespace Games
                     j++;
                 }
             }
+
+            //Win detection
+            if (blueCount == 0)
+            {
+                DisableGameButtons();
+                label8.ForeColor = Color.Red;
+                label8.Text = "YOU WIN!";
+            }
+            else if (redCount == 0)
+            {
+                DisableGameButtons();
+                label8.ForeColor = Color.Blue;
+                label8.Text = "YOU WIN!";
+            }
+
+            //Update stats
+            label4.Text = redCount.ToString();
+            label5.Text = blueCount.ToString();
+            label6.Text = greyCount.ToString();
+            label11.Text = Game.moves.ToString();
+            if (gameTime != null)
+            {
+                TimeSpan ts = gameTime.Elapsed;
+                string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",ts.Hours, ts.Minutes, ts.Seconds,ts.Milliseconds / 10);
+                label12.Text = elapsedTime;
+            }
+            
         }
 
         public Button[] GetGameButtons()
