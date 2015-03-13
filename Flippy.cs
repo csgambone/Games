@@ -14,8 +14,11 @@ namespace Games
     public partial class Flippy : Form
     {
         FlippyGame Game = new FlippyGame();
+
+        //timer
         //public Stopwatch gameTime;
         Stopwatch gameTime = new Stopwatch();
+        Timer timeUpdater = new Timer();
 
         public Flippy()
         {
@@ -41,6 +44,11 @@ namespace Games
             flippyToolStripMenuItem.Click += new EventHandler(flippyToolStripMenuItem_Click);
             ToolStripMenuItem1.Click += new EventHandler(ToolStripMenuItem1_Click);
             logixToolStripMenuItem.Click += new EventHandler(logixToolStripMenuItem_Click);
+
+            //timeUpdater setup
+            timeUpdater.Tick += new EventHandler(TimerEventProcessor);
+            timeUpdater.Interval = 100;
+            timeUpdater.Start();
 
             //Start disabled
             DisableGameButtons();
@@ -80,7 +88,7 @@ namespace Games
             Game.NewGame(true);
             RenderGame();
             EnableGameButtons();
-            gameTime.Start();
+            gameTime.Restart();
         }
 
         private void playNoCenters_Click(object sender, EventArgs e)
@@ -89,7 +97,14 @@ namespace Games
             Game.NewGame(false);
             RenderGame();
             EnableGameButtons();
-            gameTime.Start();
+            gameTime.Restart();
+        }
+
+        private void TimerEventProcessor(object sender, EventArgs e)
+        {
+            TimeSpan ts = gameTime.Elapsed;
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}",ts.Hours, ts.Minutes, ts.Seconds);
+            label12.Text = elapsedTime;
         }
 
         public void RenderGame() {
@@ -134,12 +149,14 @@ namespace Games
             if (blueCount == 0)
             {
                 DisableGameButtons();
+                gameTime.Stop();
                 label8.ForeColor = Color.Red;
                 label8.Text = "YOU WIN!";
             }
             else if (redCount == 0)
             {
                 DisableGameButtons();
+                gameTime.Stop();
                 label8.ForeColor = Color.Blue;
                 label8.Text = "YOU WIN!";
             }
@@ -148,14 +165,7 @@ namespace Games
             label4.Text = redCount.ToString();
             label5.Text = blueCount.ToString();
             label6.Text = greyCount.ToString();
-            label11.Text = Game.moves.ToString();
-            if (gameTime != null)
-            {
-                TimeSpan ts = gameTime.Elapsed;
-                string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",ts.Hours, ts.Minutes, ts.Seconds,ts.Milliseconds / 10);
-                label12.Text = elapsedTime;
-            }
-            
+            label11.Text = Game.moves.ToString();          
         }
 
         public Button[] GetGameButtons()
