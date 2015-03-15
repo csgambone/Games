@@ -47,7 +47,7 @@ namespace Games
 
         private void button3_Click(object sender, EventArgs e)
         {
-            NYI();
+            GoTo2048(this);
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -80,7 +80,7 @@ namespace Games
         }
         private void ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            NYI();
+            GoTo2048(this);
         }
         private void logixToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -113,6 +113,14 @@ namespace Games
             Flippy.Show();
         }
 
+        public static void GoTo2048(Form currentForm)
+        {
+            currentForm.Hide();
+            var _2048 = new _2048();
+            _2048.Closed += (s, args) => currentForm.Close();
+            _2048.Show();
+        }
+
         public static void NYI()
         {
             MessageBox.Show("NOT YET IMPLEMENTED.");
@@ -121,6 +129,11 @@ namespace Games
         public static void ExitApplication()
         {
             Application.Exit();
+        }
+
+        private void MainMenu_Load(object sender, EventArgs e)
+        {
+
         }
 
     }

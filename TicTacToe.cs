@@ -443,7 +443,7 @@ namespace Games
         }
         private void ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            MainMenu.NYI();
+            MainMenu.GoTo2048(this);
         }
         private void logixToolStripMenuItem_Click(object sender, EventArgs e)
         {

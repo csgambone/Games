@@ -16,7 +16,6 @@ namespace Games
         FlippyGame Game = new FlippyGame();
 
         //timer
-        //public Stopwatch gameTime;
         Stopwatch gameTime = new Stopwatch();
         Timer timeUpdater = new Timer();
 
@@ -233,7 +232,7 @@ namespace Games
         }
         private void ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            MainMenu.NYI();
+            MainMenu.GoTo2048(this);
         }
         private void logixToolStripMenuItem_Click(object sender, EventArgs e)
         {
