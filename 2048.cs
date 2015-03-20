@@ -1,5 +1,4 @@
 ﻿using System;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -27,7 +26,7 @@ namespace Games
             //Game field buttons
 
             //Play button
-            //button1.Click += new EventHandler(playCenters_Click);
+            button17.Click += new EventHandler(play_Click);
 
             //Menu strip
             mainMenuToolStripMenuItem.Click += new EventHandler(mainMenuToolStripMenuItem_Click);
@@ -43,6 +42,14 @@ namespace Games
             timeUpdater.Start();
         }
 
+        private void play_Click(object sender, EventArgs e)
+        {
+            //ClearGame();
+            Game.NewGame();
+            RenderGame();
+            gameTime.Restart();
+        }
+
         private void TimerEventProcessor(object sender, EventArgs e)
         {
             TimeSpan ts = gameTime.Elapsed;
@@ -50,9 +57,53 @@ namespace Games
             label12.Text = elapsedTime;
         }
 
-        private void _2048_Load(object sender, EventArgs e)
-        {
 
+        public void RenderGame()
+        {
+            Button[] gameArray = GetGameButtons();
+
+            int i = 0;
+            int j = 0;
+
+            foreach (Button gameButton in gameArray)
+            {
+                if (Game.GameBoard[i, j] != 0)
+                {
+                    gameButton.Text = Game.GameBoard[i, j].ToString();
+                }
+                else
+                {
+                    gameButton.Text = "";
+                }
+
+                //increment/reset counters for two dimensional gameArray
+                if (j == 3)
+                {
+                    i++;
+                    j = 0;
+                }
+                else
+                {
+                    j++;
+                }
+            }
+
+            //Win detection
+        }
+
+        public void ClearGame()
+        {
+            Button[] gameArray = GetGameButtons();
+            foreach (Button gameButton in gameArray)
+            {
+                gameButton.Text = "";
+            }
+        }
+
+        public Button[] GetGameButtons()
+        {
+            Button[] gameArray = { button1, button2, button3, button4, button5, button6, button7, button8, button9, button10, button11, button12, button13, button14, button15, button16 };
+            return gameArray;
         }
 
         //Menu strip
