@@ -57,6 +57,36 @@ namespace Games
             label12.Text = elapsedTime;
         }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Left)
+            {
+                Game.MoveLeft();
+                RenderGame();
+                return true;
+            }
+            else if (keyData == Keys.Right)
+            {
+                Game.MoveRight();
+                RenderGame();
+                return true;
+            }
+            else if (keyData == Keys.Up)
+            {
+                Game.MoveUp();
+                RenderGame();
+                return true;
+            }
+            else if (keyData == Keys.Down)
+            {
+                Game.MoveDown();
+                RenderGame();
+                return true;
+            }
+            else
+                return base.ProcessCmdKey(ref msg, keyData);
+        }
+
 
         public void RenderGame()
         {
