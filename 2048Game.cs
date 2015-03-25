@@ -54,7 +54,7 @@ namespace Games
 
         private void SpawnNumber()
         {
-            int[,] emptyCoords = new int[14, 2];
+            int[,] emptyCoords = new int[16, 2];
             int count = 0;
             int selection;
             Random random = new Random();
@@ -79,12 +79,37 @@ namespace Games
             }
             else
             {
-                //Game Over
+                //Check for Game Over
             }
         }
 
+        private void GameOver()
+        {
+            for (int i = 0; i <= 3; i++)
+            {
+                LookAhead(i);
+            }
+        }
+
+        //0 = right, 1 = down, 2 = left, 3 = up
+        private void LookAhead(int direction)
+        {
+            //int[,] lookAheadBoard = new int[4, 4];
+            int[,] lookAheadBoard = GameBoard;
+            lookAheadBoard = MoveLeft(lookAheadBoard, true);
+
+            var equal = lookAheadBoard.Rank == GameBoard.Rank && Enumerable.Range(0, lookAheadBoard.Rank).All(dimension => lookAheadBoard.GetLength(dimension) == GameBoard.GetLength(dimension)) && lookAheadBoard.Cast<double>().SequenceEqual(GameBoard.Cast<double>());
+
+            if (equal)
+            {
+
+            }
+
+
+        }
+
         //Movement methods
-        public void MoveLeft()
+        public int[,] MoveLeft(int[,] Board, bool LookAhead = false)
         {
             //Loop through rows from 0 to 3
             for (int i = 0; i < 4; i++)
@@ -95,24 +120,28 @@ namespace Games
                     for (int k = j; k > 0; k--)
                     {
                         //check column for equal, if equal sum in check column, clear current column
-                        if (GameBoard[i, k] == GameBoard[i, k - 1])
+                        if (Board[i, k] == Board[i, k - 1])
                         {
                             //destination x2, current = 0
-                            GameBoard[i, k - 1] = GameBoard[i, k - 1] * 2;
-                            GameBoard[i, k] = 0;
+                            Board[i, k - 1] = Board[i, k - 1] * 2;
+                            Board[i, k] = 0;
                         }
                         //if any possible destination from 0 column to current column-1 is 0, move there in that order of priority
-                        else if (GameBoard[i, k - 1] == 0)
+                        else if (Board[i, k - 1] == 0)
                         {
                             //destination = current, current = 0
-                            GameBoard[i, k - 1] = GameBoard[i, k];
-                            GameBoard[i, k] = 0;
+                            Board[i, k - 1] = Board[i, k];
+                            Board[i, k] = 0;
                         }
                     }
                 }
             }
-            //Spawn new number
-            SpawnNumber();
+            if (LookAhead == false)
+            {
+                //Spawn new number
+                SpawnNumber();
+            }
+            return Board;
         }
 
         public void MoveRight()

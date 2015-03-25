@@ -61,7 +61,7 @@ namespace Games
         {
             if (keyData == Keys.Left)
             {
-                Game.MoveLeft();
+                Game.MoveLeft(Game.GameBoard);
                 RenderGame();
                 return true;
             }
