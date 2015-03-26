@@ -10,6 +10,8 @@ namespace Games
     {
         public int[,] GameBoard = new int[4, 4];
         public int score = 0;
+        public bool active = false;
+        public bool gameOver = false;
 
         public void NewGame()
         {
@@ -80,32 +82,64 @@ namespace Games
             else
             {
                 //Check for Game Over
+                if (GameOver() == true)
+                {
+                    active = false;
+                    gameOver = true;
+                }
             }
         }
 
-        private void GameOver()
+        private bool GameOver()
         {
+            bool gameOver = true;
+
             for (int i = 0; i <= 3; i++)
             {
-                LookAhead(i);
+                if (LookAhead(i) == true) {
+                    gameOver = false;
+                }
             }
+
+            return gameOver;
         }
 
         //0 = right, 1 = down, 2 = left, 3 = up
-        private void LookAhead(int direction)
+        private bool LookAhead(int direction)
         {
             //int[,] lookAheadBoard = new int[4, 4];
             int[,] lookAheadBoard = GameBoard;
-            lookAheadBoard = MoveLeft(lookAheadBoard, true);
+            bool canMove = true;
 
-            var equal = lookAheadBoard.Rank == GameBoard.Rank && Enumerable.Range(0, lookAheadBoard.Rank).All(dimension => lookAheadBoard.GetLength(dimension) == GameBoard.GetLength(dimension)) && lookAheadBoard.Cast<double>().SequenceEqual(GameBoard.Cast<double>());
+            switch (direction)
+            {
+                case 0:
+                    lookAheadBoard = MoveRight(lookAheadBoard, true);
+                    break;
+                case 1:
+                    lookAheadBoard = MoveDown(lookAheadBoard, true);
+                    break;
+                case 2:
+                    lookAheadBoard = MoveLeft(lookAheadBoard, true);
+                    break;
+                case 3:
+                    lookAheadBoard = MoveUp(lookAheadBoard, true);
+                    break;
+                default:
+                    Console.WriteLine("Invalid input to _2048Game.LookAhead()");
+                    break;
+            }
+
+            bool equal = (lookAheadBoard.Rank == GameBoard.Rank) && (Enumerable.Range(0, lookAheadBoard.Rank).All(dimension => lookAheadBoard.GetLength(dimension) == GameBoard.GetLength(dimension))) && (lookAheadBoard.Cast<int>().SequenceEqual(GameBoard.Cast<int>()));
+
+
 
             if (equal)
             {
-
+                canMove = false;
             }
 
-
+            return canMove;
         }
 
         //Movement methods
@@ -144,7 +178,7 @@ namespace Games
             return Board;
         }
 
-        public void MoveRight()
+        public int[,] MoveRight(int[,] Board, bool LookAhead = false)
         {
             //Loop through rows from 0 to 3
             for (int i = 0; i < 4; i++)
@@ -155,27 +189,31 @@ namespace Games
                     for (int k = 0; k < j; k++)
                     {
                         //check column for equal, if equal sum in check column, clear current column
-                        if (GameBoard[i, k] == GameBoard[i, k + 1])
+                        if (Board[i, k] == Board[i, k + 1])
                         {
                             //destination x2, current = 0
-                            GameBoard[i, k + 1] = GameBoard[i, k + 1] * 2;
-                            GameBoard[i, k] = 0;
+                            Board[i, k + 1] = Board[i, k + 1] * 2;
+                            Board[i, k] = 0;
                         }
                         //if any possible destination from 0 column to current column-1 is 0, move there in that order of priority
-                        else if (GameBoard[i, k + 1] == 0)
+                        else if (Board[i, k + 1] == 0)
                         {
                             //destination = current, current = 0
-                            GameBoard[i, k + 1] = GameBoard[i, k];
-                            GameBoard[i, k] = 0;
+                            Board[i, k + 1] = Board[i, k];
+                            Board[i, k] = 0;
                         }
                     }
                 }
             }
-            //Spawn new number
-            SpawnNumber();
+            if (LookAhead == false)
+            {
+                //Spawn new number
+                SpawnNumber();
+            }
+            return Board;
         }
 
-        public void MoveUp()
+        public int[,] MoveUp(int[,] Board, bool LookAhead = false)
         {
             //Loop through columns from 0 to 3
             for (int j = 0; j < 4; j++)
@@ -186,27 +224,31 @@ namespace Games
                     for (int k = i; k > 0; k--)
                     {
                         //check column for equal, if equal sum in check column, clear current column
-                        if (GameBoard[k, j] == GameBoard[k - 1, j])
+                        if (Board[k, j] == Board[k - 1, j])
                         {
                             //destination x2, current = 0
-                            GameBoard[k - 1, j] = GameBoard[k - 1, j] * 2;
-                            GameBoard[k, j] = 0;
+                            Board[k - 1, j] = Board[k - 1, j] * 2;
+                            Board[k, j] = 0;
                         }
                         //if any possible destination from 0 column to current column-1 is 0, move there in that order of priority
-                        else if (GameBoard[k - 1, j] == 0)
+                        else if (Board[k - 1, j] == 0)
                         {
                             //destination = current, current = 0
-                            GameBoard[k - 1, j] = GameBoard[k, j];
-                            GameBoard[k, j] = 0;
+                            Board[k - 1, j] = Board[k, j];
+                            Board[k, j] = 0;
                         }
                     }
                 }
             }
-            //Spawn new number
-            SpawnNumber();
+            if (LookAhead == false)
+            {
+                //Spawn new number
+                SpawnNumber();
+            }
+            return Board;
         }
 
-        public void MoveDown()
+        public int[,] MoveDown(int[,] Board, bool LookAhead = false)
         {
             //Loop through columns from 0 to 3
             for (int j = 0; j < 4; j++)
@@ -217,24 +259,28 @@ namespace Games
                     for (int k = 0; k < i; k++)
                     {
                         //check column for equal, if equal sum in check column, clear current column
-                        if (GameBoard[k, j] == GameBoard[k + 1, j])
+                        if (Board[k, j] == Board[k + 1, j])
                         {
                             //destination x2, current = 0
-                            GameBoard[k + 1, j] = GameBoard[k + 1, j] * 2;
-                            GameBoard[k, j] = 0;
+                            Board[k + 1, j] = Board[k + 1, j] * 2;
+                            Board[k, j] = 0;
                         }
                         //if any possible destination from 0 column to current column-1 is 0, move there in that order of priority
-                        else if (GameBoard[k + 1, j] == 0)
+                        else if (Board[k + 1, j] == 0)
                         {
                             //destination = current, current = 0
-                            GameBoard[k + 1, j] = GameBoard[k, j];
-                            GameBoard[k, j] = 0;
+                            Board[k + 1, j] = Board[k, j];
+                            Board[k, j] = 0;
                         }
                     }
                 }
             }
-            //Spawn new number
-            SpawnNumber();
+            if (LookAhead == false)
+            {
+                //Spawn new number
+                SpawnNumber();
+            }
+            return Board;
         }
     }
 }

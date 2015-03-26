@@ -44,10 +44,10 @@ namespace Games
 
         private void play_Click(object sender, EventArgs e)
         {
-            //ClearGame();
             Game.NewGame();
             RenderGame();
             gameTime.Restart();
+            Game.active = true;
         }
 
         private void TimerEventProcessor(object sender, EventArgs e)
@@ -59,27 +59,27 @@ namespace Games
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (keyData == Keys.Left)
+            if ((keyData == Keys.Left) && (Game.active == true))
             {
                 Game.MoveLeft(Game.GameBoard);
                 RenderGame();
                 return true;
             }
-            else if (keyData == Keys.Right)
+            else if ((keyData == Keys.Right) && (Game.active == true))
             {
-                Game.MoveRight();
+                Game.MoveRight(Game.GameBoard);
                 RenderGame();
                 return true;
             }
-            else if (keyData == Keys.Up)
+            else if ((keyData == Keys.Up) && (Game.active == true))
             {
-                Game.MoveUp();
+                Game.MoveUp(Game.GameBoard);
                 RenderGame();
                 return true;
             }
-            else if (keyData == Keys.Down)
+            else if ((keyData == Keys.Down) && (Game.active == true))
             {
-                Game.MoveDown();
+                Game.MoveDown(Game.GameBoard);
                 RenderGame();
                 return true;
             }
@@ -119,14 +119,9 @@ namespace Games
             }
 
             //Win detection
-        }
-
-        public void ClearGame()
-        {
-            Button[] gameArray = GetGameButtons();
-            foreach (Button gameButton in gameArray)
+            if (Game.gameOver == true)
             {
-                gameButton.Text = "";
+                gameTime.Stop();
             }
         }
 
