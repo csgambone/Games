@@ -12,10 +12,14 @@ namespace Games
         public int score = 0;
         public bool active = false;
         public bool gameOver = false;
+        public bool win = false;
 
         public void NewGame()
         {
             Random random = new Random();
+            gameOver = false;
+            score = 0;
+
             int i = 0;
             int j = 0;
             int k = 0;
@@ -74,7 +78,14 @@ namespace Games
                     }
                 }
             }
-            if (count != 0)
+
+            //Check for win
+            if (win == true)
+            {
+                active = false;
+                gameOver = true;
+            }
+            else if (count != 0)
             {
                 selection = random.Next(0, count);
                 NewGameButton(emptyCoords[selection, 0], emptyCoords[selection, 1]);
@@ -107,9 +118,18 @@ namespace Games
         //0 = right, 1 = down, 2 = left, 3 = up
         private bool LookAhead(int direction)
         {
-            //int[,] lookAheadBoard = new int[4, 4];
-            int[,] lookAheadBoard = GameBoard;
-            bool canMove = true;
+            int[,] lookAheadBoard = new int[4, 4];
+            //int[,] lookAheadBoard = GameBoard;
+
+            for (int i = 0; i <= 3; i++)
+            {
+                for (int j = 0; j <= 3; j++)
+                {
+                    lookAheadBoard[i, j] = GameBoard[i, j];
+                }
+            }
+
+            bool canMove = false;
 
             switch (direction)
             {
@@ -130,14 +150,25 @@ namespace Games
                     break;
             }
 
-            bool equal = (lookAheadBoard.Rank == GameBoard.Rank) && (Enumerable.Range(0, lookAheadBoard.Rank).All(dimension => lookAheadBoard.GetLength(dimension) == GameBoard.GetLength(dimension))) && (lookAheadBoard.Cast<int>().SequenceEqual(GameBoard.Cast<int>()));
+            //bool equal = (lookAheadBoard.Rank == GameBoard.Rank) && (Enumerable.Range(0, lookAheadBoard.Rank).All(dimension => lookAheadBoard.GetLength(dimension) == GameBoard.GetLength(dimension))) && (lookAheadBoard.Cast<int>().SequenceEqual(GameBoard.Cast<int>()));
 
+            for (int i = 0; i <= 3; i++)
+            {
+                for (int j = 0; j <= 3; j++)
+                {
+                    if (lookAheadBoard[i, j] != GameBoard[i, j])
+                    {
+                        canMove = true;
+                    }
+                }
+            }
 
-
+            /*
             if (equal)
             {
                 canMove = false;
             }
+            */
 
             return canMove;
         }
@@ -157,6 +188,16 @@ namespace Games
                         if (Board[i, k] == Board[i, k - 1])
                         {
                             //destination x2, current = 0
+                            if (LookAhead == false)
+                            {
+                                //add destroyed tile value to score
+                                score += Board[i, k - 1];
+                                //if destroyed tile is half of win value, win value was created, set win=true
+                                if (Board[i, k - 1] == 32)
+                                {
+                                    win = true;
+                                }
+                            }
                             Board[i, k - 1] = Board[i, k - 1] * 2;
                             Board[i, k] = 0;
                         }
@@ -192,6 +233,16 @@ namespace Games
                         if (Board[i, k] == Board[i, k + 1])
                         {
                             //destination x2, current = 0
+                            if (LookAhead == false)
+                            {
+                                //add destroyed tile value to score
+                                score += Board[i, k + 1];
+                                //if destroyed tile is half of win value, win value was created, set win=true
+                                if (Board[i, k + 1] == 32)
+                                {
+                                    win = true;
+                                }
+                            }
                             Board[i, k + 1] = Board[i, k + 1] * 2;
                             Board[i, k] = 0;
                         }
@@ -227,6 +278,16 @@ namespace Games
                         if (Board[k, j] == Board[k - 1, j])
                         {
                             //destination x2, current = 0
+                            if (LookAhead == false)
+                            {
+                                //add destroyed tile value to score
+                                score += Board[k - 1, j];
+                                //if destroyed tile is half of win value, win value was created, set win=true
+                                if (Board[k - 1, j] == 32)
+                                {
+                                    win = true;
+                                }
+                            }
                             Board[k - 1, j] = Board[k - 1, j] * 2;
                             Board[k, j] = 0;
                         }
@@ -262,6 +323,16 @@ namespace Games
                         if (Board[k, j] == Board[k + 1, j])
                         {
                             //destination x2, current = 0
+                            if (LookAhead == false)
+                            {
+                                //add destroyed tile value to score
+                                score += Board[k + 1, j];
+                                //if destroyed tile is half of win value, win value was created, set win=true
+                                if (Board[k + 1, j] == 32)
+                                {
+                                    win = true;
+                                }
+                            }
                             Board[k + 1, j] = Board[k + 1, j] * 2;
                             Board[k, j] = 0;
                         }

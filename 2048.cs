@@ -59,32 +59,62 @@ namespace Games
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if ((keyData == Keys.Left) && (Game.active == true))
+            if ((keyData == Keys.Left))
             {
-                Game.MoveLeft(Game.GameBoard);
-                RenderGame();
-                return true;
+                if (Game.gameOver == false)
+                {
+                    Game.MoveLeft(Game.GameBoard);
+                    RenderGame();
+                    return true;
+                }
+                else
+                {
+                    return true;
+                }
             }
-            else if ((keyData == Keys.Right) && (Game.active == true))
+            else if ((keyData == Keys.Right))
             {
-                Game.MoveRight(Game.GameBoard);
-                RenderGame();
-                return true;
+                if (Game.gameOver == false)
+                {
+                    Game.MoveRight(Game.GameBoard);
+                    RenderGame();
+                    return true;
+                }
+                else
+                {
+                    return true;
+                }
             }
-            else if ((keyData == Keys.Up) && (Game.active == true))
+            else if ((keyData == Keys.Up))
             {
-                Game.MoveUp(Game.GameBoard);
-                RenderGame();
-                return true;
+                if (Game.gameOver == false)
+                {
+                    Game.MoveUp(Game.GameBoard);
+                    RenderGame();
+                    return true;
+                }
+                else
+                {
+                    return true;
+                }
             }
-            else if ((keyData == Keys.Down) && (Game.active == true))
+            else if ((keyData == Keys.Down))
             {
-                Game.MoveDown(Game.GameBoard);
-                RenderGame();
-                return true;
+                if (Game.gameOver == false)
+                {
+                    Game.MoveDown(Game.GameBoard);
+                    RenderGame();
+                    return true;
+                }
+                else
+                {
+                    return true;
+                }
             }
             else
+            {
                 return base.ProcessCmdKey(ref msg, keyData);
+            }
         }
 
 
@@ -118,10 +148,20 @@ namespace Games
                 }
             }
 
+            //Update score
+            label11.Text = Game.score.ToString();
+
             //Win detection
             if (Game.gameOver == true)
             {
                 gameTime.Stop();
+                if (Game.win == true) {
+                    WinMessage();
+                }
+                else
+                {
+                    LoseMessage();
+                }
             }
         }
 
@@ -129,6 +169,16 @@ namespace Games
         {
             Button[] gameArray = { button1, button2, button3, button4, button5, button6, button7, button8, button9, button10, button11, button12, button13, button14, button15, button16 };
             return gameArray;
+        }
+
+        public static void WinMessage()
+        {
+            MessageBox.Show("YOU WIN.");
+        }
+
+        public static void LoseMessage()
+        {
+            MessageBox.Show("GAME OVER.");
         }
 
         //Menu strip
