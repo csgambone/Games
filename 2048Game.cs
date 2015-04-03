@@ -120,14 +120,16 @@ namespace Games
         {
             int[,] lookAheadBoard = new int[4, 4];
             //int[,] lookAheadBoard = GameBoard;
-
+            /*
             for (int i = 0; i <= 3; i++)
             {
                 for (int j = 0; j <= 3; j++)
                 {
                     lookAheadBoard[i, j] = GameBoard[i, j];
                 }
-            }
+            }*/
+
+            Array.Copy(GameBoard, lookAheadBoard, GameBoard.Length);
 
             bool canMove = false;
 
@@ -188,18 +190,18 @@ namespace Games
                         if (Board[i, k] == Board[i, k - 1])
                         {
                             //destination x2, current = 0
+                            Board[i, k - 1] = Board[i, k - 1] * 2;
+                            Board[i, k] = 0;
                             if (LookAhead == false)
                             {
                                 //add destroyed tile value to score
                                 score += Board[i, k - 1];
                                 //if destroyed tile is half of win value, win value was created, set win=true
-                                if (Board[i, k - 1] == 32)
+                                if (Board[i, k - 1] == 2048)
                                 {
                                     win = true;
                                 }
                             }
-                            Board[i, k - 1] = Board[i, k - 1] * 2;
-                            Board[i, k] = 0;
                         }
                         //if any possible destination from 0 column to current column-1 is 0, move there in that order of priority
                         else if (Board[i, k - 1] == 0)
@@ -233,18 +235,18 @@ namespace Games
                         if (Board[i, k] == Board[i, k + 1])
                         {
                             //destination x2, current = 0
+                            Board[i, k + 1] = Board[i, k + 1] * 2;
+                            Board[i, k] = 0;
                             if (LookAhead == false)
                             {
                                 //add destroyed tile value to score
                                 score += Board[i, k + 1];
                                 //if destroyed tile is half of win value, win value was created, set win=true
-                                if (Board[i, k + 1] == 32)
+                                if (Board[i, k + 1] == 2048)
                                 {
                                     win = true;
                                 }
                             }
-                            Board[i, k + 1] = Board[i, k + 1] * 2;
-                            Board[i, k] = 0;
                         }
                         //if any possible destination from 0 column to current column-1 is 0, move there in that order of priority
                         else if (Board[i, k + 1] == 0)
@@ -278,6 +280,8 @@ namespace Games
                         if (Board[k, j] == Board[k - 1, j])
                         {
                             //destination x2, current = 0
+                            Board[k - 1, j] = Board[k - 1, j] * 2;
+                            Board[k, j] = 0;
                             if (LookAhead == false)
                             {
                                 //add destroyed tile value to score
@@ -288,8 +292,6 @@ namespace Games
                                     win = true;
                                 }
                             }
-                            Board[k - 1, j] = Board[k - 1, j] * 2;
-                            Board[k, j] = 0;
                         }
                         //if any possible destination from 0 column to current column-1 is 0, move there in that order of priority
                         else if (Board[k - 1, j] == 0)
@@ -323,18 +325,18 @@ namespace Games
                         if (Board[k, j] == Board[k + 1, j])
                         {
                             //destination x2, current = 0
+                            Board[k + 1, j] = Board[k + 1, j] * 2;
+                            Board[k, j] = 0;
                             if (LookAhead == false)
                             {
                                 //add destroyed tile value to score
                                 score += Board[k + 1, j];
                                 //if destroyed tile is half of win value, win value was created, set win=true
-                                if (Board[k + 1, j] == 32)
+                                if (Board[k + 1, j] == 2048)
                                 {
                                     win = true;
                                 }
                             }
-                            Board[k + 1, j] = Board[k + 1, j] * 2;
-                            Board[k, j] = 0;
                         }
                         //if any possible destination from 0 column to current column-1 is 0, move there in that order of priority
                         else if (Board[k + 1, j] == 0)
